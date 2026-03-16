@@ -2,40 +2,34 @@ from instagrapi import Client
 import time
 import os
 
-# --- 1. البيانات (تأكد من كتابة الباسوورد الجديد) ---
-USERNAME = "sans_7_4"
+# --- البيانات الصحيحة ---
+USERNAME = "sans_7_4"  # <--- تأكد أن هذا يوزرك الصحيح
 PASSWORD = "ksmk123456" 
 GROUP_ID = "949847180867720"
-MESSAGE = "احدهم يجرب"  
-"
+MESSAGE = "احدهم يجرب"
 
-# اسم ملف الجلسة لحفظ تسجيل الدخول
 SESSION_FILE = "session.json"
-
 cl = Client()
 
 def start_bot():
     try:
-        # محاولة تحميل الجلسة السابقة لتجنب قفل الحساب
+        user = USERNAME.strip()
+        
         if os.path.exists(SESSION_FILE):
             print("📦 تحميل الجلسة المحفوظة...")
             cl.load_settings(SESSION_FILE)
         
-        print(f"📡 محاولة تسجيل الدخول لـ: {USERNAME}")
-        cl.login(USERNAME, PASSWORD)
+        print(f"📡 محاولة الدخول لـ: {user}")
+        cl.login(user, PASSWORD)
         
-        # حفظ الجلسة بعد نجاح الدخول لأول مرة
         cl.dump_settings(SESSION_FILE)
-        print("✅ تم تسجيل الدخول وحفظ الجلسة بنجاح!")
+        print("✅ تم تسجيل الدخول وحفظ الجلسة!")
 
         while True:
             try:
-                # إرسال الرسالة
                 cl.direct_send(MESSAGE, thread_ids=[GROUP_ID])
-                print(f"✅ تم إرسال الرسالة بنجاح.")
-                
-                # الانتظار 20 دقيقة
-                print("😴 سأنتظر 20 دقيقة قبل الرسالة القادمة...")
+                print(f"✅ تم إرسال: {MESSAGE}")
+                print("😴 انتظار 20 دقيقة...")
                 time.sleep(220)
                 
             except Exception as e:
@@ -44,6 +38,7 @@ def start_bot():
 
     except Exception as e:
         print(f"❌ فشل تسجيل الدخول: {e}")
+        print("💡 جرب تفتح الانستقرام وتضغط 'هذا أنا' لو طلع لك تنبيه.")
 
 if __name__ == "__main__":
     start_bot()
