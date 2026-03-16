@@ -2,38 +2,37 @@ from instagrapi import Client
 import time
 from datetime import datetime
 
-# --- إعدادات الحساب ---
-USERNAME = 'sans_7_4'
-PASSWORD = 'ksmk12345' 
-GROUP_ID = '949847180867720'
+# --- إعدادات الحساب (تأكد من كتابتها بين علامات التنصيص) ---
+USER = "sans_7_4"
+PASS = "ksmk12345"
+GROUP_ID = "949847180867720"
 
-# --- ✍️ اكتب رسالتك هنا بين علامات التنصيص ---
+# --- ✍️ خانة الرسالة (اكتب اللي تبي هنا) ---
 MESSAGE_TEXT = "احدهم يجرب"
 
 cl = Client()
 
 def start_bot():
     try:
-        print("🚀 Starting bot without proxy...")
-        print("🚀 Login attempt...")
-        cl.login(USERNAME, PASSWORD)
+        # تنظيف اليوزر من أي مسافات مخفية
+        clean_user = USER.strip()
+        print(f"📡 Attempting login for: [{clean_user}]")
+        
+        # محاولة الدخول
+        cl.login(clean_user, PASS)
         print("✅ Logged in successfully!")
 
         while True:
             try:
-                # إرسال الرسالة
                 cl.direct_send(MESSAGE_TEXT, thread_ids=[GROUP_ID])
-                now = datetime.now().strftime("%H:%M:%S")
-                print(f"✅ Message sent at {now}")
-                
-                # الانتظار 20 دقيقة
-                print("😴 Waiting for 20 minutes...")
-                time.sleep(80)
+                print(f"✅ Message sent at {datetime.now().strftime('%H:%M:%S')}")
+                time.sleep(220) # يرسل كل 20 دقيقة
             except Exception as e:
-                print(f"❌ Error sending message: {e}")
+                print(f"❌ Error during sending: {e}")
                 time.sleep(60)
+
     except Exception as e:
-        print(f"❌ Login failed: {e}")
+        print(f"❌ Login failed! Error: {e}")
 
 if __name__ == "__main__":
     start_bot()
