@@ -1,37 +1,43 @@
 from instagrapi import Client
 import time
-import os
+from datetime import datetime
 
-# --- الإعدادات ---
-# الأفضل تحط اليوزر والباسورد هنا مؤقتاً أو تستخدم Environment Variables
+# --- إعدادات الحساب ---
 USERNAME = 'sans_7_4'
-PASSWORD = 'ksmk12345'
+PASSWORD = 'ksmk12345'  # تأكد أنه باسورده الصحيح
 GROUP_ID = '949847180867720'
-PROXY = 'http://108.165.174.99:3128' # البروكسي الأمريكي اللي اخترناه
+
+# --- ✍️ عدل رسالتك هنا ---
+MESSAGE_TEXT = "احدهم يجرب"
 
 cl = Client()
 
 def start_bot():
     try:
-        # ضبط البروكسي
-        cl.set_proxy(PROXY)
-        print(f"📡 Proxy Set: {PROXY}")
+        print("🚀 Running without proxy for stability...")
         
         print("🚀 Login attempt...")
         cl.login(USERNAME, PASSWORD)
         print("✅ Logged in successfully!")
-        
+
         while True:
-            cl.direct_send("🤖 رسالة تلقائية من السيرفر", thread_ids=[GROUP_ID])
-            print(f"✅ Message sent at {time.strftime('%H:%M:%S')}")
-            # ننتظر 20 دقيقة (1200 ثانية)
-            time.sleep(1200)
-            
+            try:
+                # إرسال الرسالة للمجموعة
+                cl.direct_send(MESSAGE_TEXT, thread_ids=[GROUP_ID])
+                
+                now = datetime.now().strftime("%H:%M:%S")
+                print(f"✅ Message sent at {now}")
+                
+                # الانتظار لمدة 20 دقيقة (1200 ثانية)
+                print("😴 Waiting for 20 minutes...")
+                time.sleep(80)
+                
+        except Exception as e:
+                print(f"❌ Error sending message: {e}")
+                time.sleep(60) # انتظر دقيقة وحاول مجدداً
+
     except Exception as e:
-        print(f"❌ Error: {e}")
-        print("Retrying in 60 seconds...")
-        time.sleep(60)
-        start_bot()
+        print(f"❌ Login failed: {e}")
 
 if __name__ == "__main__":
     start_bot()
